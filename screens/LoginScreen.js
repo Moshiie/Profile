@@ -1,8 +1,27 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, StatusBar, ImageBackground } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, StatusBar, ImageBackground, ActivityIndicator, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function LoginScreen({ setIsLoggedIn, navigation }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = () => {
+    if (!email || !password) {
+      Alert.alert('Validation Error', 'Please enter both email and password.');
+      return;
+    }
+
+    setLoading(true);
+    // Simulate a login process
+    setTimeout(() => {
+      setLoading(false);
+      // Assuming the login is successful for demonstration purposes
+      setIsLoggedIn(true);
+    }, 2000);
+  };
+
   return (
     <ImageBackground 
       source={{ uri: 'https://example.com/your-background-image.jpg' }}
@@ -21,6 +40,9 @@ export default function LoginScreen({ setIsLoggedIn, navigation }) {
             style={styles.input}
             autoCapitalize="none"
             keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+            accessibilityLabel="Email Input"
           />
         </View>
 
@@ -31,11 +53,18 @@ export default function LoginScreen({ setIsLoggedIn, navigation }) {
             placeholderTextColor="#A0A0A0" 
             style={styles.input}
             secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+            accessibilityLabel="Password Input"
           />
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={() => setIsLoggedIn(true)}>
-          <Text style={styles.buttonText}>Login</Text>
+        <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+          {loading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Login</Text>
+          )}
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('SignUp')}>
@@ -60,7 +89,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: 'rgba(242, 242, 242, 0.8)', 
+    backgroundColor: 'rgba(242, 242, 242, 0.9)', // Slightly more opaque
     borderRadius: 10,
     margin: 20,
   },

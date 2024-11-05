@@ -1,13 +1,30 @@
-import React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, ActivityIndicator, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function PasswordRecoveryScreen({ navigation }) {
-  const handleSendRecoveryEmail = () => {
-    // Add your logic for sending recovery email here (e.g., API call)
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
-    // After sending the email, navigate back to Login screen
-    navigation.navigate('Login');
+  const handleSendRecoveryEmail = () => {
+    if (!validateEmail(email)) {
+      Alert.alert('Invalid Email', 'Please enter a valid email address.');
+      return;
+    }
+
+    setLoading(true);
+    // Simulate an API call to send recovery email
+    setTimeout(() => {
+      setLoading(false);
+      // Assuming the email is sent successfully for demonstration purposes
+      Alert.alert('Success', 'A recovery email has been sent to your email address.');
+      navigation.navigate('Login');
+    }, 2000);
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   return (
@@ -22,11 +39,18 @@ export default function PasswordRecoveryScreen({ navigation }) {
           style={styles.input} 
           autoCapitalize="none" 
           placeholderTextColor="#A0A0A0"
+          value={email}
+          onChangeText={setEmail}
+          accessibilityLabel="Email Input"
         />
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleSendRecoveryEmail}>
-        <Text style={styles.buttonText}>Send Recovery Email</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSendRecoveryEmail} disabled={loading}>
+        {loading ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Send Recovery Email</Text>
+        )}
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('Login')}>
@@ -53,7 +77,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    borderColor: '#0056b3', // Blue border color
+    borderColor: '#0056b3',
     borderWidth: 1,
     borderRadius: 10,
     marginBottom: 15,
@@ -73,14 +97,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   button: {
-    backgroundColor: '#0056b3', // Blue for button
+    backgroundColor: '#0056b3',
     borderRadius: 10,
     height: 50,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
-    elevation: 5, 
+    elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -95,7 +119,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   linkText: {
-    color: '#0056b3', // Blue for link text
+    color: '#0056b3',
     fontSize: 16,
     textDecorationLine: 'underline',
   },

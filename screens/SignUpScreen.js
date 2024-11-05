@@ -1,9 +1,22 @@
-import React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, ImageBackground } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, ImageBackground, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function SignUpScreen({ navigation }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
   const handleSignUp = () => {
+    if (email === '' || password === '' || confirmPassword === '') {
+      Alert.alert('Error', 'All fields are required.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match.');
+      return;
+    }
+
     // Add your signup logic here (e.g., API call)
     
     // After successful signup, navigate back to Login screen
@@ -26,6 +39,9 @@ export default function SignUpScreen({ navigation }) {
             style={styles.input} 
             autoCapitalize="none" 
             placeholderTextColor="#A0A0A0"
+            value={email}
+            onChangeText={setEmail}
+            accessibilityLabel="Email Input"
           />
         </View>
 
@@ -36,6 +52,9 @@ export default function SignUpScreen({ navigation }) {
             style={styles.input} 
             secureTextEntry 
             placeholderTextColor="#A0A0A0"
+            value={password}
+            onChangeText={setPassword}
+            accessibilityLabel="Password Input"
           />
         </View>
 
@@ -46,6 +65,9 @@ export default function SignUpScreen({ navigation }) {
             style={styles.input} 
             secureTextEntry 
             placeholderTextColor="#A0A0A0"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            accessibilityLabel="Confirm Password Input"
           />
         </View>
 
@@ -71,21 +93,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: 'rgba(242, 242, 242, 0.8)', 
-    borderRadius: 10,
+    backgroundColor: 'rgba(242, 242, 242, 0.9)', 
+    borderRadius: 15,
     margin: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    borderColor: '#0056b3', // Blue border color
+    borderColor: '#0056b3',
     borderWidth: 1,
     borderRadius: 10, 
     marginBottom: 15,
@@ -105,14 +131,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   button: {
-    backgroundColor: '#0056b3', // Blue for button
-    borderRadius: 10, 
+    backgroundColor: '#0056b3',
+    borderRadius: 10,
     width: '100%',
-    height: 60, // Increase the height of the button
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
-    elevation: 5, 
+    elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -120,14 +146,14 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: 20, // Increase the font size of the button text
+    fontSize: 20,
     fontWeight: 'bold',
   },
   link: {
     marginTop: 10,
   },
   linkText: {
-    color: '#0056b3', // Blue for link text
+    color: '#0056b3',
     fontSize: 16,
     textDecorationLine: 'underline',
   },

@@ -1,8 +1,7 @@
-// App.js
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './screens/HomeScreen';
+import ProfileScreen from './screens/ProfileScreen'; 
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import PasswordRecoveryScreen from './screens/PasswordRecoveryScreen';
@@ -16,8 +15,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isLoggedIn ? (
-          <Stack.Screen name="Home">
-            {(props) => <HomeScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+          <Stack.Screen name="Profile">
+            {(props) => <ProfileScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
           </Stack.Screen>
         ) : (
           <>

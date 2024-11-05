@@ -1,16 +1,34 @@
 import React, { useState } from 'react';
-import { View, Text, Switch, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Switch, Image, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+
+const SettingItem = ({ icon, text, onPress, isDarkMode }) => (
+  <TouchableOpacity style={styles.settingRow} onPress={onPress}>
+    {icon}
+    <Text style={[styles.settingText, isDarkMode ? styles.lightText : styles.darkText]}>{text}</Text>
+  </TouchableOpacity>
+);
 
 export default function HomeScreen({ setIsLoggedIn }) {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const toggleSwitch = () => setIsDarkMode((prev) => !prev);
 
+  const handleLogout = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Logout', onPress: () => setIsLoggedIn(false) },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <SafeAreaView style={[styles.container, isDarkMode ? styles.darkBackground : styles.lightBackground]}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        {/* Profile Section */}
         <View style={[styles.profileContainer, styles.card, isDarkMode ? styles.cardDark : styles.cardLight]}>
           <Image
             style={styles.profileImage}
@@ -22,7 +40,6 @@ export default function HomeScreen({ setIsLoggedIn }) {
           </View>
         </View>
 
-        {/* Settings Section */}
         <View style={[styles.settingsContainer, styles.card, isDarkMode ? styles.cardDark : styles.cardLight]}>
           <View style={styles.settingRow}>
             <Ionicons name="moon" size={24} color={isDarkMode ? '#FFD700' : '#333'} />
@@ -32,50 +49,62 @@ export default function HomeScreen({ setIsLoggedIn }) {
               thumbColor={isDarkMode ? '#f5dd4b' : '#f4f3f4'}
               onValueChange={toggleSwitch}
               value={isDarkMode}
+              accessibilityLabel="Toggle Dark Mode"
             />
           </View>
 
-          <TouchableOpacity style={styles.settingRow}>
-            <MaterialIcons name="notifications" size={24} color={isDarkMode ? '#FFD700' : '#333'} />
-            <Text style={[styles.settingText, isDarkMode ? styles.lightText : styles.darkText]}>Notifications</Text>
-          </TouchableOpacity>
+          <SettingItem
+            icon={<MaterialIcons name="notifications" size={24} color={isDarkMode ? '#FFD700' : '#333'} />}
+            text="Notifications"
+            isDarkMode={isDarkMode}
+          />
 
-          <TouchableOpacity style={styles.settingRow}>
-            <MaterialIcons name="privacy-tip" size={24} color={isDarkMode ? '#FFD700' : '#333'} />
-            <Text style={[styles.settingText, isDarkMode ? styles.lightText : styles.darkText]}>Privacy Settings</Text>
-          </TouchableOpacity>
+          <SettingItem
+            icon={<MaterialIcons name="privacy-tip" size={24} color={isDarkMode ? '#FFD700' : '#333'} />}
+            text="Privacy Settings"
+            isDarkMode={isDarkMode}
+          />
 
-          <TouchableOpacity style={styles.settingRow}>
-            <MaterialIcons name="account-circle" size={24} color={isDarkMode ? '#FFD700' : '#333'} />
-            <Text style={[styles.settingText, isDarkMode ? styles.lightText : styles.darkText]}>Account Settings</Text>
-          </TouchableOpacity>
+          <SettingItem
+            icon={<MaterialIcons name="account-circle" size={24} color={isDarkMode ? '#FFD700' : '#333'} />}
+            text="Account Settings"
+            isDarkMode={isDarkMode}
+          />
 
-          <TouchableOpacity style={styles.settingRow}>
-            <MaterialIcons name="help-outline" size={24} color={isDarkMode ? '#FFD700' : '#333'} />
-            <Text style={[styles.settingText, isDarkMode ? styles.lightText : styles.darkText]}>Help & Support</Text>
-          </TouchableOpacity>
+          <SettingItem
+            icon={<MaterialIcons name="help-outline" size={24} color={isDarkMode ? '#FFD700' : '#333'} />}
+            text="Help & Support"
+            isDarkMode={isDarkMode}
+          />
 
-          <TouchableOpacity style={styles.settingRow}>
-            <MaterialIcons name="language" size={24} color={isDarkMode ? '#FFD700' : '#333'} />
-            <Text style={[styles.settingText, isDarkMode ? styles.lightText : styles.darkText]}>Language Preferences</Text>
-          </TouchableOpacity>
+          <SettingItem
+            icon={<MaterialIcons name="language" size={24} color={isDarkMode ? '#FFD700' : '#333'} />}
+            text="Language Preferences"
+            isDarkMode={isDarkMode}
+          />
 
-          <TouchableOpacity style={styles.settingRow}>
-            <MaterialIcons name="color-lens" size={24} color={isDarkMode ? '#FFD700' : '#333'} />
-            <Text style={[styles.settingText, isDarkMode ? styles.lightText : styles.darkText]}>Theme Settings</Text>
-          </TouchableOpacity>
+          <SettingItem
+            icon={<MaterialIcons name="color-lens" size={24} color={isDarkMode ? '#FFD700' : '#333'} />}
+            text="Theme Settings"
+            isDarkMode={isDarkMode}
+          />
 
-          <TouchableOpacity style={styles.settingRow}>
-            <MaterialIcons name="data-usage" size={24} color={isDarkMode ? '#FFD700' : '#333'} />
-            <Text style={[styles.settingText, isDarkMode ? styles.lightText : styles.darkText]}>Data Usage</Text>
-          </TouchableOpacity>
+          <SettingItem
+            icon={<MaterialIcons name="data-usage" size={24} color={isDarkMode ? '#FFD700' : '#333'} />}
+            text="Data Usage"
+            isDarkMode={isDarkMode}
+          />
 
-          <TouchableOpacity style={styles.settingRow}>
-            <MaterialIcons name="feedback" size={24} color={isDarkMode ? '#FFD700' : '#333'} />
-            <Text style={[styles.settingText, isDarkMode ? styles.lightText : styles.darkText]}>Feedback</Text>
-          </TouchableOpacity>
+          <SettingItem
+            icon={<MaterialIcons name="feedback" size={24} color={isDarkMode ? '#FFD700' : '#333'} />}
+            text="Feedback"
+            isDarkMode={isDarkMode}
+          />
 
-          <TouchableOpacity style={[styles.logoutButton, isDarkMode ? styles.logoutButtonDark : styles.logoutButtonLight]} onPress={() => setIsLoggedIn(false)}>
+          <TouchableOpacity
+            style={[styles.logoutButton, isDarkMode ? styles.logoutButtonDark : styles.logoutButtonLight]}
+            onPress={handleLogout}
+          >
             <MaterialIcons name="logout" size={24} color="white" />
             <Text style={styles.logoutText}>Logout</Text>
           </TouchableOpacity>
